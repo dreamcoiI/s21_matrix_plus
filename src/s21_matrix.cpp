@@ -171,6 +171,7 @@ S21Matrix S21Matrix ::Transpose() const {
       transponse.matrix[i][j] = matrix[j][i];
     }
   }
+  return transponse;
 }
 //создаем матрицу миноров
 S21Matrix S21Matrix::Minor_Create(int _rows_, int _cols_) const {
@@ -223,6 +224,7 @@ S21Matrix S21Matrix ::CalcComplements() const {
           Minor_matrix.Determinant() * pow(-1, (i + j));
     }
   }
+  return Calc_Complements;
 }
 
 S21Matrix S21Matrix ::InverseMatrix() const {
@@ -236,6 +238,7 @@ S21Matrix S21Matrix ::InverseMatrix() const {
       Inverse_Matrix.matrix[i][j] = Inverse_Matrix.matrix[i][j] / deter;
     }
   }
+  return Inverse_Matrix;
 }
 
 //Сложение двух матриц
@@ -318,4 +321,17 @@ S21Matrix& S21Matrix ::operator*=(const S21Matrix& other) {
 S21Matrix& S21Matrix ::operator*=(const double& num) {
   MulNumber(num);
   return *this;
+}
+
+//Индексация по элементам матрицы(строки, столбцы)
+double& S21Matrix::operator()(const int i, const int j) {
+  if (i > rows || i < 0 || j > cols || j < 0)
+    throw std::logic_error("Error, index is out of range");
+  return matrix[i][j];
+}
+
+double S21Matrix::operator()(const int i, const int j) const {
+  if (i > rows || i < 0 || j > cols || j < 0)
+    throw std::logic_error("Error, index is out of range");
+  return matrix[i][j];
 }
