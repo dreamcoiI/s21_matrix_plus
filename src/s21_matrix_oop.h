@@ -10,7 +10,7 @@ class S21Matrix {
   S21Matrix();
   S21Matrix(const int rows, const int cols);
   S21Matrix(const S21Matrix& other);
-  S21Matrix(S21Matrix&& other);
+  S21Matrix(S21Matrix&& other) noexcept;
   ~S21Matrix();
   int Get_Rows() const;
   int Get_Cols() const;
@@ -27,9 +27,20 @@ class S21Matrix {
   S21Matrix Minor_Create(int _rows_, int _cols_) const;
   double Determinant() const;
   S21Matrix CalcComplements() const;
+  S21Matrix InverseMatrix() const;
   //операторы перегрузки
-  S21Matrix& S21Matrix ::operator=(const S21Matrix& other);
-  S21Matrix& S21Matrix ::operator=(S21Matrix& other) noexcept;
+  S21Matrix& operator+(const S21Matrix& other);
+  S21Matrix& operator-(const S21Matrix& other);
+  S21Matrix& operator*(const S21Matrix& other);
+  S21Matrix operator*(const S21Matrix& other, const double& num);
+  S21Matrix operator*(const double& num,const S21Matrix& other);
+  bool S21Matrix ::operator==(const S21Matrix& other);
+  S21Matrix& operator=(const S21Matrix& other);
+  S21Matrix& operator=(S21Matrix& other) noexcept;
+  S21Matrix& operator+=(const S21Matrix&other);
+  S21Matrix& operator-=(const S21Matrix&other);
+  S21Matrix& operator*=(const S21Matrix&other);
+  S21Matrix& operator*=(const double& num);
 
  private:
   int rows = 0, cols = 0;

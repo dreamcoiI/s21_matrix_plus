@@ -107,36 +107,6 @@ S21Matrix ::S21Matrix(S21Matrix&& other) noexcept {
 // деструктор
 S21Matrix ::~S21Matrix() { MemoryFree(); }
 
-//Присвоение матрице значений другой матрицы путем копирования
-S21Matrix& S21Matrix ::operator=(const S21Matrix& other) {
-  if (this == &other) {
-    ;
-  } else {
-    this->MemoryFree();
-    cols = other.cols;
-    rows = other.rows;
-    for (auto i = 0; i < rows; i++) {
-      for (auto j = 0; j < cols; j++) {
-        matrix[i][j] = other.matrix[i][j];
-      }
-    }
-  }
-  return *this;
-}
-
-S21Matrix& S21Matrix ::operator=(S21Matrix& other) noexcept {
-  if (this == &other) {
-    ;
-  } else {
-    this->MemoryFree();
-    cols = other.cols;
-    rows = other.rows;
-    matrix = other.matrix;
-    other.matrix = nullptr;
-  }
-  return *this;
-}
-
 //Проверяет матрицы на равенство между собой
 bool S21Matrix::EqMatrix(const S21Matrix& other) {
   if (rows != other.rows || cols != other.cols) return false;
@@ -254,3 +224,105 @@ S21Matrix S21Matrix ::CalcComplements() const {
     }
   }
 }
+
+S21Matrix S21Matrix ::InverseMatrix() const {
+  double deter = 0;
+  deter = this->Determinant();
+  if (fabs(deter) - 01e-7 < 0) throw std::logic_error("Determinant is null");
+  S21Matrix Inverse_Matrix = this->CalcComplements();
+  Inverse_Matrix.Transpose();
+  for (auto i = 0; i < rows; i++) {
+    for (auto j = 0; j < rows; j++) {
+      Inverse_Matrix.matrix[i][j] = Inverse_Matrix.matrix[i][j] / deter;
+    }
+  }
+}
+
+//Сложение двух матриц
+S21Matrix& S21Matrix ::operator+(const S21Matrix& other) {
+  this->SumMatrix(other);
+  return *this;
+}
+
+//Вычитание одной матрицы из другой
+S21Matrix& S21Matrix ::operator-(const S21Matrix& other) {
+  this->SubMatrix(other);
+  return *this;
+}
+
+//Умножение матриц
+S21Matrix& S21Matrix ::operator*(const S21Matrix& other) {
+  this->MulMatrix(other);
+  return *this;
+}
+
+//умножение матрицы на число
+S21Matrix operator*(const S21Matrix&other, const double& num) {
+  S21Matrix result = other;
+  result *= num;
+  return result;
+}
+
+//умножение числа на матрицу
+S21Matrix operator*(const double& num, const S21Matrix&other) {
+  S21Matrix result = other;
+  result *= num;
+  return result;
+}
+
+//Проверка на равенство матриц (EqMatrix)
+bool S21Matrix ::operator==(const S21Matrix& other) {
+  return this->EqMatrix(other);
+}
+
+//Присвоение матрице значений другой матрицы путем копирования
+S21Matrix& S21Matrix ::operator=(const S21Matrix& other) {
+  if (this != &other) {
+    this->MemoryFree();
+    cols = other.cols;
+    rows = other.rows;
+    for (auto i = 0; i < rows; i++) {
+      for (auto j = 0; j < cols; j++) {
+        matrix[i][j] = other.matrix[i][j];
+      }
+    }
+  }
+  return *this;
+}
+
+//Присвоение матрице значений другой матрицы
+S21Matrix& S21Matrix ::operator=(S21Matrix& other) noexcept {
+  if (this != &other) {
+    this->MemoryFree();
+    cols = other.cols;
+    rows = other.rows;
+    matrix = other.matrix;
+    other.matrix = nullptr;
+  }
+  return *this;
+}
+
+//Присвоение сложения (SumMatrix)
+S21Matrix& S21Matrix ::operator+=(const S21Matrix&other) {
+  this->SumMatrix(other);
+  return *this;
+}
+
+//Присвоение разности (SubMatrix)
+S21Matrix& S21Matrix ::operator-=(const S21Matrix&other) {
+  this->SubMatrix(other);
+  return *this;
+}
+
+//Присвоение умножения (MulMatrix)
+S21Matrix& S21Matrix ::operator*=(const S21Matrix&other) {
+  MulMatrix(other);
+  return *this;
+}
+
+//Присвоение умножения (MulNumber)
+S21Matrix& S21Matrix ::operator*=(const double& num) {
+  MulNumber(num);
+  return *this;
+}
+
