@@ -99,9 +99,9 @@ S21Matrix ::S21Matrix(S21Matrix&& other) noexcept {
   rows = other.rows;
   cols = other.cols;
   matrix = other.matrix;
-  other.matrix = nullptr;
   other.cols = 0;
   other.rows = 0;
+  other.matrix = nullptr;
 }
 
 // деструктор
@@ -257,15 +257,8 @@ S21Matrix& S21Matrix ::operator*(const S21Matrix& other) {
 }
 
 //умножение матрицы на число
-S21Matrix operator*(const S21Matrix&other, const double& num) {
-  S21Matrix result = other;
-  result *= num;
-  return result;
-}
-
-//умножение числа на матрицу
-S21Matrix operator*(const double& num, const S21Matrix&other) {
-  S21Matrix result = other;
+S21Matrix S21Matrix::operator*(double num) const {
+  S21Matrix result = *this;
   result *= num;
   return result;
 }
@@ -281,6 +274,7 @@ S21Matrix& S21Matrix ::operator=(const S21Matrix& other) {
     this->MemoryFree();
     cols = other.cols;
     rows = other.rows;
+    MemoryAllocate();
     for (auto i = 0; i < rows; i++) {
       for (auto j = 0; j < cols; j++) {
         matrix[i][j] = other.matrix[i][j];
@@ -303,19 +297,19 @@ S21Matrix& S21Matrix ::operator=(S21Matrix& other) noexcept {
 }
 
 //Присвоение сложения (SumMatrix)
-S21Matrix& S21Matrix ::operator+=(const S21Matrix&other) {
+S21Matrix& S21Matrix ::operator+=(const S21Matrix& other) {
   this->SumMatrix(other);
   return *this;
 }
 
 //Присвоение разности (SubMatrix)
-S21Matrix& S21Matrix ::operator-=(const S21Matrix&other) {
+S21Matrix& S21Matrix ::operator-=(const S21Matrix& other) {
   this->SubMatrix(other);
   return *this;
 }
 
 //Присвоение умножения (MulMatrix)
-S21Matrix& S21Matrix ::operator*=(const S21Matrix&other) {
+S21Matrix& S21Matrix ::operator*=(const S21Matrix& other) {
   MulMatrix(other);
   return *this;
 }
@@ -325,4 +319,3 @@ S21Matrix& S21Matrix ::operator*=(const double& num) {
   MulNumber(num);
   return *this;
 }
-
