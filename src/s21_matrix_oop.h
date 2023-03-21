@@ -6,6 +6,7 @@
 #include <iostream>
 
 class S21Matrix {
+  public:
   //конструкторы и деструктор
   S21Matrix();
   S21Matrix(const int rows, const int cols);
@@ -26,6 +27,7 @@ class S21Matrix {
   S21Matrix Transpose() const;
   S21Matrix Minor_Create(int _rows_, int _cols_) const;
   double Determinant() const;
+  double DoubleMatrixDeter() const ;
   S21Matrix CalcComplements() const;
   S21Matrix InverseMatrix() const;
   //операторы перегрузки
