@@ -46,7 +46,7 @@ class S21Matrix {
   double operator()(const int i, const int j) const;
 
  private:
-  int rows = 0, cols = 0;
+  int rows_ = 0, cols_ = 0;
   double** matrix = nullptr;
 
   void MemoryAllocate();

@@ -2,10 +2,10 @@
 
 //аллоцирование
 void S21Matrix ::MemoryAllocate() {
-  matrix = new double*[rows]();
-  matrix[0] = new double[rows * cols]();
-  for (auto i = 1; i != rows; i++) {
-    matrix[i] = matrix[i - 1] + cols;
+  matrix = new double*[rows_]();
+  matrix[0] = new double[rows_ * cols_]();
+  for (auto i = 1; i != rows_; i++) {
+    matrix[i] = matrix[i - 1] + cols_;
   }
 }
 
@@ -14,21 +14,21 @@ void S21Matrix ::MemoryFree() {
   if (matrix && matrix[0]) {
     delete matrix[0];
     delete matrix;
-    rows = 0;
-    cols = 0;
+    rows_ = 0;
+    cols_ = 0;
   }
 }
 //геттеры, сеттеры, инициализаци и отпринтовка матриц
-int S21Matrix ::Get_Rows() const { return rows; }
+int S21Matrix ::Get_Rows() const { return rows_; }
 
-int S21Matrix ::Get_Cols() const { return cols; }
+int S21Matrix ::Get_Cols() const { return cols_; }
 
-void S21Matrix ::Set_Rows(const int _rows_) {
-  if (_rows_ < 1) throw std::logic_error("Error, index is out of range");
-  if (rows != _rows_) {
-    S21Matrix tmp_matrix(_rows_, cols);
-    for (int i = 0; i < rows && i < tmp_matrix.rows; i++) {
-      for (int j = 0; j < cols && j < tmp_matrix.cols; j++) {
+void S21Matrix ::Set_Rows(const int _rows__) {
+  if (_rows__ < 1) throw std::logic_error("Error, index is out of range");
+  if (rows_ != _rows__) {
+    S21Matrix tmp_matrix(_rows__, cols_);
+    for (int i = 0; i < rows_ && i < tmp_matrix.rows_; i++) {
+      for (int j = 0; j < cols_ && j < tmp_matrix.cols_; j++) {
         tmp_matrix.matrix[i][j] = matrix[i][j];
       }
     }
@@ -36,12 +36,12 @@ void S21Matrix ::Set_Rows(const int _rows_) {
   }
 }
 
-void S21Matrix ::Set_Cols(const int _cols_) {
-  if (_cols_ < 1) throw std::logic_error("Error, index is out of range");
-  if (cols != _cols_) {
-    S21Matrix tmp_matrix(rows, _cols_);
-    for (int i = 0; i < rows && i < tmp_matrix.rows; i++) {
-      for (int j = 0; j < cols && j < tmp_matrix.cols; j++) {
+void S21Matrix ::Set_Cols(const int _cols__) {
+  if (_cols__ < 1) throw std::logic_error("Error, index is out of range");
+  if (cols_ != _cols__) {
+    S21Matrix tmp_matrix(rows_, _cols__);
+    for (int i = 0; i < rows_ && i < tmp_matrix.rows_; i++) {
+      for (int j = 0; j < cols_ && j < tmp_matrix.cols_; j++) {
         tmp_matrix.matrix[i][j] = matrix[i][j];
       }
     }
@@ -50,8 +50,8 @@ void S21Matrix ::Set_Cols(const int _cols_) {
 }
 
 void S21Matrix::Print_Matrix() {
-  for (auto i = 0; i < rows; i++) {
-    for (auto j = 0; j < cols; j++) {
+  for (auto i = 0; i < rows_; i++) {
+    for (auto j = 0; j < cols_; j++) {
       std ::cout << matrix[i][j] << " ";
     }
     std ::cout << std ::endl;
@@ -60,8 +60,8 @@ void S21Matrix::Print_Matrix() {
 }
 
 void S21Matrix::Init_Matrix() {
-  for (auto i = 0; i < rows; i++) {
-    for (auto j = 0; j < cols; j++) {
+  for (auto i = 0; i < rows_; i++) {
+    for (auto j = 0; j < cols_; j++) {
       matrix[i][j] = i + j;
     }
   }
@@ -69,14 +69,14 @@ void S21Matrix::Init_Matrix() {
 //Базовый конструктор, инициализирующий матрицу некоторой заранее заданной
 //размерностью
 S21Matrix ::S21Matrix() {
-  rows = 3;
-  cols = 3;
+  rows_ = 3;
+  cols_ = 3;
   MemoryAllocate();
 }
 
 //Параметризированный конструктор с количеством строк и столбцов
-S21Matrix ::S21Matrix(const int rows, const int cols) : rows(rows), cols(cols) {
-  if (rows < 1 || cols < 1) {
+S21Matrix ::S21Matrix(const int rows_, const int cols_) : rows_(rows_), cols_(cols_) {
+  if (rows_ < 1 || cols_ < 1) {
     std::logic_error("ERROR! INCORRECT MEANING");
   } else {
     MemoryAllocate();
@@ -85,10 +85,10 @@ S21Matrix ::S21Matrix(const int rows, const int cols) : rows(rows), cols(cols) {
 
 //конструктор копирования
 S21Matrix ::S21Matrix(const S21Matrix& other)
-    : rows(other.rows), cols(other.cols) {
+    : rows_(other.rows_), cols_(other.cols_) {
   MemoryAllocate();
-  for (auto i = 0; i < rows; i++) {
-    for (auto j = 0; j < cols; j++) {
+  for (auto i = 0; i < rows_; i++) {
+    for (auto j = 0; j < cols_; j++) {
       matrix[i][j] = other.matrix[i][j];
     }
   }
@@ -96,11 +96,11 @@ S21Matrix ::S21Matrix(const S21Matrix& other)
 
 //конструктор переноса из одной матрицы в другую
 S21Matrix ::S21Matrix(S21Matrix&& other) noexcept {
-  rows = other.rows;
-  cols = other.cols;
+  rows_ = other.rows_;
+  cols_ = other.cols_;
   matrix = other.matrix;
-  other.cols = 0;
-  other.rows = 0;
+  other.cols_ = 0;
+  other.rows_ = 0;
   other.matrix = nullptr;
 }
 
@@ -109,9 +109,9 @@ S21Matrix ::~S21Matrix() { MemoryFree(); }
 
 //Проверяет матрицы на равенство между собой
 bool S21Matrix::EqMatrix(const S21Matrix& other) {
-  if (rows != other.rows || cols != other.cols) return false;
-  for (auto i = 0; i < rows; i++) {
-    for (auto j = 0; j < cols; j++) {
+  if (rows_ != other.rows_ || cols_ != other.cols_) return false;
+  for (auto i = 0; i < rows_; i++) {
+    for (auto j = 0; j < cols_; j++) {
       if (fabs(matrix[i][j] - other.matrix[i][j]) > 01e-7) return false;
     }
   }
@@ -120,10 +120,10 @@ bool S21Matrix::EqMatrix(const S21Matrix& other) {
 
 //Прибавляет вторую матрицы к текущей
 void S21Matrix::SumMatrix(const S21Matrix& other) {
-  if (rows != other.rows || cols != other.cols)
+  if (rows_ != other.rows_ || cols_ != other.cols_)
     throw std::logic_error("Error, incorrect values");
-  for (auto i = 0; i < rows; i++) {
-    for (auto j = 0; j < cols; j++) {
+  for (auto i = 0; i < rows_; i++) {
+    for (auto j = 0; j < cols_; j++) {
       matrix[i][j] += other.matrix[i][j];
     }
   }
@@ -131,10 +131,10 @@ void S21Matrix::SumMatrix(const S21Matrix& other) {
 
 //Вычитает из текущей матрицы другую
 void S21Matrix::SubMatrix(const S21Matrix& other) {
-  if (rows != other.rows || cols != other.cols)
+  if (rows_ != other.rows_ || cols_ != other.cols_)
     throw std::logic_error("Error, incorrect values");
-  for (auto i = 0; i < rows; i++) {
-    for (auto j = 0; j < cols; j++) {
+  for (auto i = 0; i < rows_; i++) {
+    for (auto j = 0; j < cols_; j++) {
       matrix[i][j] -= other.matrix[i][j];
     }
   }
@@ -142,8 +142,8 @@ void S21Matrix::SubMatrix(const S21Matrix& other) {
 
 //Умножает текущую матрицу на число
 void S21Matrix::MulNumber(const double num) {
-  for (auto i = 0; i < rows; i++) {
-    for (auto j = 0; j < cols; j++) {
+  for (auto i = 0; i < rows_; i++) {
+    for (auto j = 0; j < cols_; j++) {
       matrix[i][j] *= num;
     }
   }
@@ -151,12 +151,12 @@ void S21Matrix::MulNumber(const double num) {
 
 //Умножает текущую матрицу на вторую
 void S21Matrix::MulMatrix(const S21Matrix& other) {
-  if (rows != other.cols || cols != other.rows)
+  if (rows_ != other.cols_ || cols_ != other.rows_)
     throw std::logic_error("Error, incorrect values");
-  S21Matrix Mul_matrix(rows, other.cols);
-  for (auto i = 0; i < rows; i++) {
-    for (auto j = 0; j < cols; j++) {
-      for (auto k = 0; k < other.rows; k++) {
+  S21Matrix Mul_matrix(rows_, other.cols_);
+  for (auto i = 0; i < rows_; i++) {
+    for (auto j = 0; j < cols_; j++) {
+      for (auto k = 0; k < other.rows_; k++) {
         Mul_matrix.matrix[i][j] += matrix[i][k] * other.matrix[k][j];
       }
     }
@@ -166,45 +166,45 @@ void S21Matrix::MulMatrix(const S21Matrix& other) {
 
 //Создает новую транспонированную матрицу из текущей и возвращает ее
 S21Matrix S21Matrix ::Transpose() const {
-  S21Matrix transponse(rows, cols);
-  for (auto i = 0; i < rows; i++) {
-    for (auto j = 0; j < cols; j++) {
+  S21Matrix transponse(rows_, cols_);
+  for (auto i = 0; i < rows_; i++) {
+    for (auto j = 0; j < cols_; j++) {
       transponse.matrix[i][j] = matrix[j][i];
     }
   }
   return transponse;
 }
 //создаем матрицу миноров
-S21Matrix S21Matrix::Minor_Create(int _rows_, int _cols_) const {
-  S21Matrix minor(rows - 1, cols - 1);
-  _rows_--;
-  _cols_--;
-  auto rows_min = 0;
-  for (auto i = 0; i < rows; i++) {
-    auto cols_min = 0;
-    for (auto j = 0; j < cols; j++) {
-      if (i != _rows_ && j != _cols_) {
-        minor.matrix[rows_min][cols_min] = this->matrix[i][j];
-        cols_min++;
+S21Matrix S21Matrix::Minor_Create(int _rows__, int _cols__) const {
+  S21Matrix minor(rows_ - 1, cols_ - 1);
+  _rows__--;
+  _cols__--;
+  auto rows__min = 0;
+  for (auto i = 0; i < rows_; i++) {
+    auto cols__min = 0;
+    for (auto j = 0; j < cols_; j++) {
+      if (i != _rows__ && j != _cols__) {
+        minor.matrix[rows__min][cols__min] = this->matrix[i][j];
+        cols__min++;
       }
     }
-    if (i != _rows_) rows_min++;
+    if (i != _rows__) rows__min++;
   }
   return minor;
 }
 
 //Вычисляет и возвращает определитель текущей матрицы
 double S21Matrix::Determinant() const {
-  if (rows != cols) throw std::logic_error("Error, rows not equal columns");
+  if (rows_ != cols_) throw std::logic_error("Error, rows_ not equal columns");
   double res = 0;
-  if (rows == 1) {
+  if (rows_ == 1) {
     res = matrix[0][0];
   } else {
     double tmp = 0;
     int sign = 1;
-    for (auto i = 0; i < cols; i++) {
+    for (auto i = 0; i < cols_; i++) {
       S21Matrix minor = this->Minor_Create(1, i + 1);
-      if (minor.rows == 2) {
+      if (minor.rows_ == 2) {
         tmp = minor.DoubleMatrixDeter();
       } else {
         tmp = minor.Determinant();
@@ -222,10 +222,10 @@ double S21Matrix::DoubleMatrixDeter() const {
 
 //Вычисляет матрицу алгебраических дополнений текущей матрицы и возвращает ее
 S21Matrix S21Matrix ::CalcComplements() const {
-  if (rows != cols) throw std::logic_error("Error, incorrect values");
-  S21Matrix Calc_Complements(rows, cols);
-  for (auto i = 0; i < rows; i++) {
-    for (auto j = 0; j < cols; j++) {
+  if (rows_ != cols_) throw std::logic_error("Error, incorrect values");
+  S21Matrix Calc_Complements(rows_, cols_);
+  for (auto i = 0; i < rows_; i++) {
+    for (auto j = 0; j < cols_; j++) {
       S21Matrix Minor_matrix = this->Minor_Create(i + 1, j + 1);
       Calc_Complements.matrix[i][j] =
           Minor_matrix.Determinant() * pow(-1, (i + j));
@@ -240,8 +240,8 @@ S21Matrix S21Matrix ::InverseMatrix() const {
   if (fabs(deter- 0)  < 01e-7) throw std::logic_error("Determinant is null");
   S21Matrix Inverse_Matrix = this->CalcComplements();
   Inverse_Matrix.Transpose();
-  for (auto i = 0; i < rows; i++) {
-    for (auto j = 0; j < rows; j++) {
+  for (auto i = 0; i < rows_; i++) {
+    for (auto j = 0; j < rows_; j++) {
       Inverse_Matrix.matrix[i][j] = Inverse_Matrix.matrix[i][j] / deter;
     }
   }
@@ -282,11 +282,11 @@ bool S21Matrix ::operator==(const S21Matrix& other) {
 S21Matrix& S21Matrix ::operator=(const S21Matrix& other) {
   if (this != &other) {
     this->MemoryFree();
-    cols = other.cols;
-    rows = other.rows;
+    cols_ = other.cols_;
+    rows_ = other.rows_;
     MemoryAllocate();
-    for (auto i = 0; i < rows; i++) {
-      for (auto j = 0; j < cols; j++) {
+    for (auto i = 0; i < rows_; i++) {
+      for (auto j = 0; j < cols_; j++) {
         matrix[i][j] = other.matrix[i][j];
       }
     }
@@ -298,8 +298,8 @@ S21Matrix& S21Matrix ::operator=(const S21Matrix& other) {
 S21Matrix& S21Matrix ::operator=(S21Matrix& other) noexcept {
   if (this != &other) {
     this->MemoryFree();
-    cols = other.cols;
-    rows = other.rows;
+    cols_ = other.cols_;
+    rows_ = other.rows_;
     matrix = other.matrix;
     other.matrix = nullptr;
   }
@@ -332,13 +332,13 @@ S21Matrix& S21Matrix ::operator*=(const double& num) {
 
 //Индексация по элементам матрицы(строки, столбцы)
 double& S21Matrix::operator()(const int i, const int j) {
-  if (i > rows || i < 0 || j > cols || j < 0)
+  if (i > rows_ || i < 0 || j > cols_ || j < 0)
     throw std::logic_error("Error, index is out of range");
   return matrix[i][j];
 }
 
 double S21Matrix::operator()(const int i, const int j) const {
-  if (i > rows || i < 0 || j > cols || j < 0)
+  if (i > rows_ || i < 0 || j > cols_ || j < 0)
     throw std::logic_error("Error, index is out of range");
   return matrix[i][j];
 }
