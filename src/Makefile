@@ -28,10 +28,10 @@ rebuild:
 	make all
 
 leak:
-	CK_FORK=no leaks --atExit -- ./build/main 
+	valgrind --tool=memcheck --leak-check=yes  ./test
 
 linter:
 	cp ../materials/linters/.clang-format ..
-	clang-format -i *.cc *.h
-	clang-format -n *.cc *.h 
+	clang-format -i *.cpp *.h
+	clang-format -n *.cpp *.h 
 	rm -rf ../.clang-format

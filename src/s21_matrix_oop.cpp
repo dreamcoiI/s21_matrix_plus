@@ -75,7 +75,8 @@ S21Matrix ::S21Matrix() {
 }
 
 //Параметризированный конструктор с количеством строк и столбцов
-S21Matrix ::S21Matrix(const int rows_, const int cols_) : rows_(rows_), cols_(cols_) {
+S21Matrix ::S21Matrix(const int rows_, const int cols_)
+    : rows_(rows_), cols_(cols_) {
   if (rows_ < 1 || cols_ < 1) {
     std::logic_error("ERROR! INCORRECT MEANING");
   } else {
@@ -210,7 +211,7 @@ double S21Matrix::Determinant() const {
         tmp = minor.Determinant();
       }
       res += matrix[0][i] * tmp * sign;
-      sign*=-1;
+      sign *= -1;
     }
   }
   return res;
@@ -237,7 +238,7 @@ S21Matrix S21Matrix ::CalcComplements() const {
 S21Matrix S21Matrix ::InverseMatrix() const {
   double deter = 0;
   deter = this->Determinant();
-  if (fabs(deter- 0)  < 01e-7) throw std::logic_error("Determinant is null");
+  if (fabs(deter - 0) < 01e-7) throw std::logic_error("Determinant is null");
   S21Matrix Inverse_Matrix = this->CalcComplements();
   Inverse_Matrix.Transpose();
   for (auto i = 0; i < rows_; i++) {
@@ -267,10 +268,20 @@ S21Matrix& S21Matrix ::operator*(const S21Matrix& other) {
 }
 
 //умножение матрицы на число
-S21Matrix S21Matrix::operator*(double num) const {
-  S21Matrix result = *this;
-  result *= num;
-  return result;
+// S21Matrix S21Matrix::operator*(double num) const {
+//   S21Matrix result = *this;
+//   result *= num;
+//   return result;
+// }
+
+S21Matrix& operator*(const double num, S21Matrix&M) {
+  M.MulNumber(num);
+  return M;
+}
+
+S21Matrix& operator*(S21Matrix&M, const double num){
+  M.MulNumber(num);
+  return M;
 }
 
 //Проверка на равенство матриц (EqMatrix)

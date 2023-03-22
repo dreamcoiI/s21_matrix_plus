@@ -120,6 +120,23 @@ TEST(Arithmethic, MulMatrix) {
   EXPECT_EQ(test1(1, 1), 5);
 }
 
+TEST(Arithmethic, MulNum) {
+  auto test1 = S21Matrix(2, 2);
+  auto test2 = S21Matrix(2, 2);
+  test1.Init_Matrix();
+  test2.Init_Matrix();
+  auto test3 = 3 * test1;
+  auto test4 = test2 * 3;
+  EXPECT_EQ(test3(0, 0), 0);
+  EXPECT_EQ(test3(1, 0), 3);
+  EXPECT_EQ(test3(0, 1), 3);
+  EXPECT_EQ(test3(1, 1), 6);
+  EXPECT_EQ(test4(0, 0), 0);
+  EXPECT_EQ(test4(1, 0), 3);
+  EXPECT_EQ(test4(0, 1), 3);
+  EXPECT_EQ(test4(1, 1), 6);
+}
+
 TEST(Actions, Transpose) {
   auto test1 = S21Matrix(2, 2);
   test1(0, 0) = 3;
@@ -131,6 +148,19 @@ TEST(Actions, Transpose) {
   EXPECT_EQ(test1(0, 1), 20);
   EXPECT_EQ(test1(1, 0), 1);
   EXPECT_EQ(test1(1, 1), -2);
+}
+
+TEST(Actions, Complements) {
+  auto test1 = S21Matrix(2, 2);
+  test1(0, 0) = 3;
+  test1(0, 1) = 1;
+  test1(1, 0) = 20;
+  test1(1, 1) = -2;
+  test1 = test1.CalcComplements();
+  EXPECT_EQ(test1(0, 0), -2);
+  EXPECT_EQ(test1(0, 1), -20);
+  EXPECT_EQ(test1(1, 0), -1);
+  EXPECT_EQ(test1(1, 1), 3);
 }
 
 TEST(Actions, Determinant) {
@@ -155,19 +185,6 @@ TEST(Actions, Determinant) {
   test1(1, 0) = 7;
   test1(1, 1) = -2;
   EXPECT_EQ(test1.Determinant(), 1);
-}
-
-TEST(Actions, Complements) {
-  auto test1 = S21Matrix(2, 2);
-  test1(0, 0) = 3;
-  test1(0, 1) = 1;
-  test1(1, 0) = 20;
-  test1(1, 1) = -2;
-  test1 = test1.CalcComplements();
-  EXPECT_EQ(test1(0, 0), -2);
-  EXPECT_EQ(test1(0, 1), -20);
-  EXPECT_EQ(test1(1, 0), -1);
-  EXPECT_EQ(test1(1, 1), 3);
 }
 
 TEST(Actions, Inverse) {
@@ -200,4 +217,4 @@ TEST(Actions, Inverse) {
   EXPECT_EQ(test1(1, 1), 41);
 }
 
-}  // namespace
+} 
