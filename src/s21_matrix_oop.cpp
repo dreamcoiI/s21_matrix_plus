@@ -12,8 +12,8 @@ void S21Matrix ::MemoryAllocate() {
 //очистка
 void S21Matrix ::MemoryFree() {
   if (matrix && matrix[0]) {
-    delete matrix[0];
-    delete matrix;
+    delete[] matrix[0];
+    delete[] matrix;
     rows_ = 0;
     cols_ = 0;
   }
