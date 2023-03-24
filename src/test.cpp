@@ -217,4 +217,4 @@ TEST(Actions, Inverse) {
   EXPECT_EQ(test1(1, 1), 41);
 }
 
-} 
+}  // namespace

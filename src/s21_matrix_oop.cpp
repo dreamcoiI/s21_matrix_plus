@@ -267,19 +267,12 @@ S21Matrix& S21Matrix ::operator*(const S21Matrix& other) {
   return *this;
 }
 
-//умножение матрицы на число
-// S21Matrix S21Matrix::operator*(double num) const {
-//   S21Matrix result = *this;
-//   result *= num;
-//   return result;
-// }
-
-S21Matrix& operator*(const double num, S21Matrix&M) {
+S21Matrix& operator*(const double num, S21Matrix& M) {
   M.MulNumber(num);
   return M;
 }
 
-S21Matrix& operator*(S21Matrix&M, const double num){
+S21Matrix& operator*(S21Matrix& M, const double num) {
   M.MulNumber(num);
   return M;
 }
@@ -329,7 +322,6 @@ S21Matrix& S21Matrix ::operator-=(const S21Matrix& other) {
   return *this;
 }
 
-//Присвоение умножения (MulMatrix)
 S21Matrix& S21Matrix ::operator*=(const S21Matrix& other) {
   MulMatrix(other);
   return *this;
