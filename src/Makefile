@@ -29,9 +29,3 @@ rebuild:
 
 leak:
 	valgrind --tool=memcheck --leak-check=yes  ./test
-
-linter:
-	cp ../materials/linters/.clang-format ..
-	clang-format -i *.cpp *.h
-	clang-format -n *.cpp *.h 
-	rm -rf ../.clang-format
